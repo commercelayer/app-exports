@@ -28,7 +28,9 @@ const NewExportPage = (): JSX.Element | null => {
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
 
-  const [_match, params] = useRoute(appRoutes.newExport.path)
+  const [_match, params] = useRoute<{ resourceType?: string }>(
+    appRoutes.newExport.path
+  )
   const [_location, setLocation] = useLocation()
 
   const [apiError, setApiError] = useState<ApiError[] | undefined>()
@@ -48,8 +50,12 @@ const NewExportPage = (): JSX.Element | null => {
       <PageLayout
         title='Exports'
         mode={mode}
-        onGoBack={() => {
-          setLocation(appRoutes.list.makePath())
+        navigationButton={{
+          label: 'Back',
+          icon: 'arrowLeft',
+          onClick: () => {
+            setLocation(appRoutes.list.makePath())
+          }
         }}
       >
         <EmptyState
@@ -95,8 +101,12 @@ const NewExportPage = (): JSX.Element | null => {
     <PageLayout
       title={`Export ${showResourceNiceName(resourceType).toLowerCase()}`}
       mode={mode}
-      onGoBack={() => {
-        setLocation(appRoutes.selectResource.makePath())
+      navigationButton={{
+        label: 'Select type',
+        icon: 'arrowLeft',
+        onClick: () => {
+          setLocation(appRoutes.selectResource.makePath())
+        }
       }}
     >
       <Spacer bottom='14'>

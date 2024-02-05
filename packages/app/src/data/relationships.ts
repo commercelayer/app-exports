@@ -50,7 +50,8 @@ export function isResourceWithRelationship(
   try {
     return (
       resourceType in exportRelationships &&
-      getRelationshipsByResourceType(resourceType).length > 0
+      getRelationshipsByResourceType(resourceType as ResourceWithRelationship)
+        .length > 0
     )
   } catch {
     return false

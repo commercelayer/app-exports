@@ -73,7 +73,7 @@ export const isAvailableResource = (
   resourceType: any
 ): resourceType is AllowedResourceType => {
   try {
-    return availableResources.includes(resourceType)
+    return availableResources.includes(resourceType as AllowedResourceType)
   } catch {
     return false
   }

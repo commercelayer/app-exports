@@ -80,7 +80,7 @@ export const fetchInitialResources = async ({
 interface AdaptSuggestionsParams
   extends Pick<SearchParams, 'fieldForLabel' | 'fieldForValue'> {
   fetchedResources: ListResponse<
-    Resource & { name?: string; code?: string; id: string }
+    Resource & { name?: string; code?: string | null; id: string }
   >
 }
 

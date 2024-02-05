@@ -10,6 +10,7 @@ describe('showResourceNiceName', () => {
   })
 
   test('Should return the the id name if not found in dictionary', () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     expect(showResourceNiceName('new_resource' as any)).toBe('new_resource')
   })
 

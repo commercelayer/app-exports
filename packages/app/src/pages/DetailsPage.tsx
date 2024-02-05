@@ -22,7 +22,9 @@ const DetailsPage = (): JSX.Element | null => {
     settings: { mode }
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
-  const [_match, params] = useRoute(appRoutes.details.path)
+  const [_match, params] = useRoute<{ exportId?: string }>(
+    appRoutes.details.path
+  )
   const [_, setLocation] = useLocation()
 
   const exportId = params == null ? null : params.exportId
@@ -31,8 +33,12 @@ const DetailsPage = (): JSX.Element | null => {
     return (
       <PageLayout
         title='Exports'
-        onGoBack={() => {
-          setLocation(appRoutes.list.makePath())
+        navigationButton={{
+          label: 'Back',
+          icon: 'arrowLeft',
+          onClick: () => {
+            setLocation(appRoutes.list.makePath())
+          }
         }}
         mode={mode}
       >
@@ -74,8 +80,12 @@ const DetailsPage = (): JSX.Element | null => {
                 includeTime
               />
             }
-            onGoBack={() => {
-              setLocation(appRoutes.list.makePath())
+            navigationButton={{
+              label: 'Exports',
+              icon: 'arrowLeft',
+              onClick: () => {
+                setLocation(appRoutes.list.makePath())
+              }
             }}
           >
             <Spacer bottom='12'>

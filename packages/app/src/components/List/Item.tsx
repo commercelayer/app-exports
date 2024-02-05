@@ -5,6 +5,7 @@ import {
   Icon,
   ListItem,
   RadialProgress,
+  StatusIcon,
   Text,
   useTokenProvider
 } from '@commercelayer/app-elements'
@@ -65,12 +66,12 @@ function TaskIcon({ job }: { job: Export }): JSX.Element {
   }
 
   if (status === 'danger') {
-    return <Icon gap='large' name='x' background='red' />
+    return <StatusIcon gap='large' name='x' background='red' />
   }
 
   if (status === 'success') {
-    return <Icon gap='large' name='check' background='green' />
+    return <StatusIcon gap='large' name='check' background='green' />
   }
 
-  return <Icon gap='large' name='minus' background='gray' />
+  return <StatusIcon gap='large' name='minus' background='gray' />
 }
