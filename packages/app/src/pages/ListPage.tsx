@@ -10,7 +10,7 @@ import {
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
-import { Link, useLocation } from 'wouter'
+import { Link } from 'wouter'
 
 function ListPage(): JSX.Element {
   const {
@@ -19,8 +19,6 @@ function ListPage(): JSX.Element {
     settings: { mode }
   } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
-
-  const [_location, setLocation] = useLocation()
 
   if (sdkClient == null) {
     return <PageSkeleton />
@@ -31,8 +29,13 @@ function ListPage(): JSX.Element {
       <PageLayout
         title='Exports'
         mode={mode}
-        onGoBack={() => {
-          setLocation(appRoutes.list.makePath())
+        navigationButton={{
+          label: 'Hub',
+          icon: 'arrowLeft',
+          onClick: () => {
+            window.location.href =
+              dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
+          }
         }}
       >
         <EmptyState title='You are not authorized' />
@@ -44,9 +47,13 @@ function ListPage(): JSX.Element {
     <PageLayout
       title='Exports'
       mode={mode}
-      onGoBack={() => {
-        window.location.href =
-          dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
+      navigationButton={{
+        label: 'Hub',
+        icon: 'arrowLeft',
+        onClick: () => {
+          window.location.href =
+            dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
+        }
       }}
     >
       <ListExportProvider sdkClient={sdkClient} pageSize={25}>

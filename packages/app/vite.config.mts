@@ -16,11 +16,6 @@ export default defineConfig(({ mode }) => {
     build: {
       target: 'esnext'
     },
-    server: {
-      fs: {
-        strict: env.ALLOW_LOCAL_PACKAGES === 'true'
-      }
-    },
     resolve: {
       alias: {
         '#components': path.resolve(__dirname, './src/components'),
