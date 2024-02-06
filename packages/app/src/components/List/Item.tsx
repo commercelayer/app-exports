@@ -26,7 +26,7 @@ export function Item({ job }: Props): JSX.Element {
   const canDelete = job.status === 'pending' && canUser('destroy', 'exports')
 
   return (
-    <Link href={appRoutes.details.makePath(job.id)}>
+    <Link href={appRoutes.details.makePath(job.id)} asChild>
       <ListItem tag='a' icon={<TaskIcon job={job} />}>
         <div>
           <Text tag='div' weight='semibold'>
