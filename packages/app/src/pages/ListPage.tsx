@@ -100,7 +100,7 @@ function ListPage(): JSX.Element {
               actionButton={
                 canUser('create', 'exports') ? (
                   <Link href={appRoutes.selectResource.makePath()}>
-                    <a>New export</a>
+                    New export
                   </Link>
                 ) : undefined
               }

@@ -32,7 +32,11 @@ export function ResourceSelectorPage(): JSX.Element {
       <Spacer bottom='14'>
         <List>
           {availableResources.sort().map((resource) => (
-            <Link key={resource} href={appRoutes.newExport.makePath(resource)}>
+            <Link
+              key={resource}
+              href={appRoutes.newExport.makePath(resource)}
+              asChild
+            >
               <ListItem tag='a'>
                 <Text weight='semibold'>{showResourceNiceName(resource)}</Text>
                 <Icon name='caretRight' />
