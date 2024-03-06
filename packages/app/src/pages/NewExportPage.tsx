@@ -108,6 +108,7 @@ const NewExportPage = (): JSX.Element | null => {
           setLocation(appRoutes.selectResource.makePath())
         }
       }}
+      overlay
     >
       <Spacer bottom='14'>
         <Form
