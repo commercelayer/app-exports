@@ -4,8 +4,8 @@ import { appRoutes } from '#data/routes'
 import {
   Button,
   EmptyState,
+  HomePageLayout,
   List,
-  PageLayout,
   PageSkeleton,
   useCoreSdkProvider,
   useTokenProvider
@@ -13,11 +13,7 @@ import {
 import { Link } from 'wouter'
 
 function ListPage(): JSX.Element {
-  const {
-    dashboardUrl,
-    canUser,
-    settings: { mode }
-  } = useTokenProvider()
+  const { canUser } = useTokenProvider()
   const { sdkClient } = useCoreSdkProvider()
 
   if (sdkClient == null) {
@@ -26,36 +22,14 @@ function ListPage(): JSX.Element {
 
   if (!canUser('read', 'exports')) {
     return (
-      <PageLayout
-        title='Exports'
-        mode={mode}
-        navigationButton={{
-          label: 'Hub',
-          icon: 'arrowLeft',
-          onClick: () => {
-            window.location.href =
-              dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
-          }
-        }}
-      >
+      <HomePageLayout title='Exports'>
         <EmptyState title='You are not authorized' />
-      </PageLayout>
+      </HomePageLayout>
     )
   }
 
   return (
-    <PageLayout
-      title='Exports'
-      mode={mode}
-      navigationButton={{
-        label: 'Hub',
-        icon: 'arrowLeft',
-        onClick: () => {
-          window.location.href =
-            dashboardUrl != null ? `${dashboardUrl}/hub` : '/'
-        }
-      }}
-    >
+    <HomePageLayout title='Exports'>
       <ListExportProvider sdkClient={sdkClient} pageSize={25}>
         {({ state, changePage }) => {
           const { isLoading, currentPage, list } = state
@@ -119,7 +93,7 @@ function ListPage(): JSX.Element {
           )
         }}
       </ListExportProvider>
-    </PageLayout>
+    </HomePageLayout>
   )
 }
 
