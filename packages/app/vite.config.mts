@@ -1,33 +1,37 @@
-import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
-import path from 'path'
+import isEmpty from 'lodash/isEmpty'
+import externalGlobals from 'rollup-plugin-external-globals'
 import { loadEnv } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import { defineConfig } from 'vitest/config'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const basePath =
-    env.PUBLIC_PROJECT_PATH != null ? `/${env.PUBLIC_PROJECT_PATH}/` : '/'
+  const basePath = !isEmpty(env.PUBLIC_PROJECT_PATH)
+    ? `/${env.PUBLIC_PROJECT_PATH}/`
+    : '/'
 
   return {
-    plugins: [react()],
+    plugins: [react(), tsconfigPaths()],
     envPrefix: 'PUBLIC_',
     base: basePath,
     build: {
-      target: 'esnext'
-    },
-    resolve: {
-      alias: {
-        '#components': path.resolve(__dirname, './src/components'),
-        '#data': path.resolve(__dirname, './src/data'),
-        '#utils': path.resolve(__dirname, './src/utils')
-      }
+      modulePreload: false,
+      rollupOptions: {
+        external: ['react', 'react-dom'],
+        plugins: [
+          externalGlobals({
+            react: 'React',
+            'react-dom': 'ReactDOM'
+          })
+        ]
+      },
+      manifest: 'manifest.json'
     },
     test: {
       globals: true,
-      environment: 'jsdom',
-      setupFiles: ['./react-testing-library.config.js'],
-      silent: true
+      environment: 'jsdom'
     }
   }
 })
