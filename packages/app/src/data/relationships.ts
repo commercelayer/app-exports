@@ -19,6 +19,12 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
     'refunds',
     'transactions'
   ],
+  order_subscriptions: [
+    'customer',
+    'customer_payment_source',
+    'source_order',
+    'order_subscription_items'
+  ],
   payment_methods: ['order'],
   prices: ['sku', 'price_tiers'],
   shipments: ['order', 'shipping_category', 'shipping_method'],

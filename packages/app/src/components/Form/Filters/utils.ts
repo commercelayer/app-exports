@@ -1,5 +1,5 @@
 import { type QueryParamsList } from '@commercelayer/sdk'
-import { type AllFilters } from 'AppForm'
+import { type AllFilters, type FilterValue } from 'AppForm'
 import { endOfDay, startOfDay } from 'date-fns'
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
 
@@ -90,4 +90,10 @@ export function isoDateToDayEdge({
   } catch {
     return undefined
   }
+}
+
+export function parseFilterToDate(filterValue?: FilterValue): Date | null {
+  return filterValue != null && typeof filterValue === 'string'
+    ? new Date(filterValue)
+    : null
 }

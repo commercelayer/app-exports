@@ -6,23 +6,30 @@ import {
   flatSelectValues,
   useCoreSdkProvider
 } from '@commercelayer/app-elements'
-import { type OrdersField, type OrdersFilters, type FilterValue } from 'AppForm'
+import {
+  type OrderSubscriptionField,
+  type OrderSubscriptionsFilters,
+  type FilterValue
+} from 'AppForm'
 import { useEffect, useState } from 'react'
 import { parseFilterToDate } from './utils'
 
 interface Props {
-  onChange: (filters: OrdersFilters) => void
+  onChange: (filters: OrderSubscriptionsFilters) => void
 }
 
-export function Orders({ onChange }: Props): JSX.Element | null {
+export function OrderSubscriptions({ onChange }: Props): JSX.Element | null {
   const { sdkClient } = useCoreSdkProvider()
-  const [filters, setFilter] = useState<OrdersFilters>({})
+  const [filters, setFilter] = useState<OrderSubscriptionsFilters>({})
 
   if (sdkClient == null) {
     return null
   }
 
-  const updateFilters = (key: OrdersField, value: FilterValue): void => {
+  const updateFilters = (
+    key: OrderSubscriptionField,
+    value: FilterValue
+  ): void => {
     setFilter((state) => ({
       ...state,
       [key]: value
@@ -59,20 +66,12 @@ export function Orders({ onChange }: Props): JSX.Element | null {
               label: 'Draft'
             },
             {
-              value: 'placed',
-              label: 'Placed'
+              value: 'inactive',
+              label: 'Inactive'
             },
             {
-              value: 'pending',
-              label: 'Pending'
-            },
-            {
-              value: 'editing',
-              label: 'Editing'
-            },
-            {
-              value: 'approved',
-              label: 'Approved'
+              value: 'active',
+              label: 'Active'
             },
             {
               value: 'cancelled',
@@ -82,6 +81,54 @@ export function Orders({ onChange }: Props): JSX.Element | null {
           isMulti
           onSelect={(values) => {
             updateFilters('status_in', flatSelectValues(values))
+          }}
+        />
+      </Spacer>
+
+      <Spacer bottom='6'>
+        <InputSelect
+          label='Frequency'
+          initialValues={[
+            {
+              value: 'hourly',
+              label: 'Hourly'
+            },
+            {
+              value: 'daily',
+              label: 'Daily'
+            },
+            {
+              value: 'weekly',
+              label: 'Weekly'
+            },
+            {
+              value: 'monthly',
+              label: 'Monthly'
+            },
+            {
+              value: 'two-month',
+              label: '2-Month'
+            },
+            {
+              value: 'three-month',
+              label: '3-Month'
+            },
+            {
+              value: 'four-month',
+              label: '4-Month'
+            },
+            {
+              value: 'six-month',
+              label: '6-Month'
+            },
+            {
+              value: 'yearly',
+              label: 'Yearly'
+            }
+          ]}
+          isMulti
+          onSelect={(values) => {
+            updateFilters('frequency_in', flatSelectValues(values))
           }}
         />
       </Spacer>
