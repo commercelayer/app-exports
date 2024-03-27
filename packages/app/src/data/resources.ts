@@ -1,3 +1,4 @@
+import { formatResourceName } from '@commercelayer/app-elements'
 import { type AllowedResourceType } from 'App'
 
 type VisibleInUI = boolean
@@ -14,6 +15,7 @@ const resources: Record<AllowedResourceType, VisibleInUI> = {
   gift_cards: true,
   line_items: true,
   orders: true,
+  order_subscriptions: true,
   payment_methods: true,
   prices: true,
   shipments: true,
@@ -26,32 +28,6 @@ const resources: Record<AllowedResourceType, VisibleInUI> = {
   stock_items: true,
   tax_categories: true,
   transactions: true
-}
-
-/**
- * Resources dictionary
- */
-const resourceNiceName: Record<AllowedResourceType, string> = {
-  addresses: 'Addresses',
-  bundles: 'Bundles',
-  skus: 'SKUs',
-  prices: 'Prices',
-  coupons: 'Coupons',
-  sku_lists: 'SKU lists',
-  sku_list_items: 'SKU list items',
-  sku_options: 'SKU options',
-  customer_subscriptions: 'Customer subscriptions',
-  customers: 'Customers',
-  gift_cards: 'Gift cards',
-  stock_items: 'Stock items',
-  tax_categories: 'Tax categories',
-  shipping_categories: 'Shipping categories',
-  orders: 'Orders',
-  line_items: 'Line items',
-  payment_methods: 'Payment methods',
-  shipments: 'Shipments',
-  shipping_methods: 'Shipping methods',
-  transactions: 'Transactions'
 }
 
 /**
@@ -89,5 +65,10 @@ export function showResourceNiceName(resource?: string): string {
   if (resource == null) {
     return '-'
   }
-  return resourceNiceName[resource as AllowedResourceType] ?? resource
+
+  return formatResourceName({
+    resource: resource as AllowedResourceType,
+    format: 'title',
+    count: 'plural'
+  })
 }

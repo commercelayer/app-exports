@@ -15,6 +15,15 @@ declare module 'AppForm' {
     | 'created_at_gteq'
     | 'created_at_lteq'
 
+  // order subscriptions
+  type OrderSubscriptionsFilters = Filters<OrderSubscriptionField>
+  type OrderSubscriptionField =
+    | 'market_id_in'
+    | 'status_in'
+    | 'frequency_in'
+    | 'created_at_gteq'
+    | 'created_at_lteq'
+
   // skus
   type SkusFilters = Filters<SkusField>
   type SkusField =
