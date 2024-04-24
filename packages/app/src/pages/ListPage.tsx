@@ -5,8 +5,10 @@ import {
   Button,
   EmptyState,
   HomePageLayout,
+  Icon,
   List,
   PageSkeleton,
+  Spacer,
   useCoreSdkProvider,
   useTokenProvider
 } from '@commercelayer/app-elements'
@@ -30,69 +32,79 @@ function ListPage(): JSX.Element {
 
   return (
     <HomePageLayout title='Exports'>
-      <ListExportProvider sdkClient={sdkClient} pageSize={25}>
-        {({ state, changePage }) => {
-          const { isLoading, currentPage, list } = state
+      <Spacer top='14'>
+        <ListExportProvider sdkClient={sdkClient} pageSize={25}>
+          {({ state, changePage }) => {
+            const { isLoading, currentPage, list } = state
 
-          if (isLoading) {
-            return <List isLoading />
-          }
+            if (isLoading) {
+              return <List isLoading />
+            }
 
-          if (list == null) {
+            if (list == null) {
+              return (
+                <div>
+                  <EmptyState title='Unable to load list' />
+                </div>
+              )
+            }
+
+            if (list.length === 0) {
+              return (
+                <div>
+                  <EmptyState
+                    title='No export yet!'
+                    description='Create your first export'
+                    action={
+                      canUser('create', 'exports') ? (
+                        <Link href={appRoutes.selectResource.makePath()}>
+                          <Button variant='primary'>New export</Button>
+                        </Link>
+                      ) : undefined
+                    }
+                  />
+                </div>
+              )
+            }
+
+            const isRefetching = currentPage !== list.meta.currentPage
+            const { recordCount, recordsPerPage, pageCount } = list.meta
+
             return (
-              <div>
-                <EmptyState title='Unable to load list' />
-              </div>
+              <List
+                isDisabled={isRefetching}
+                title='All Exports'
+                actionButton={
+                  canUser('create', 'exports') ? (
+                    <Link href={appRoutes.selectResource.makePath()} asChild>
+                      <Button
+                        variant='secondary'
+                        size='mini'
+                        alignItems='center'
+                        aria-label='Add export'
+                      >
+                        <Icon name='plus' />
+                        New
+                      </Button>
+                    </Link>
+                  ) : undefined
+                }
+                pagination={{
+                  recordsPerPage,
+                  recordCount,
+                  currentPage,
+                  onChangePageRequest: changePage,
+                  pageCount
+                }}
+              >
+                {list.map((job) => {
+                  return <Item key={job.id} job={job} />
+                })}
+              </List>
             )
-          }
-
-          if (list.length === 0) {
-            return (
-              <div>
-                <EmptyState
-                  title='No export yet!'
-                  description='Create your first export'
-                  action={
-                    canUser('create', 'exports') ? (
-                      <Link href={appRoutes.selectResource.makePath()}>
-                        <Button variant='primary'>New export</Button>
-                      </Link>
-                    ) : undefined
-                  }
-                />
-              </div>
-            )
-          }
-
-          const isRefetching = currentPage !== list.meta.currentPage
-          const { recordCount, recordsPerPage, pageCount } = list.meta
-
-          return (
-            <List
-              isDisabled={isRefetching}
-              title='All Exports'
-              actionButton={
-                canUser('create', 'exports') ? (
-                  <Link href={appRoutes.selectResource.makePath()}>
-                    New export
-                  </Link>
-                ) : undefined
-              }
-              pagination={{
-                recordsPerPage,
-                recordCount,
-                currentPage,
-                onChangePageRequest: changePage,
-                pageCount
-              }}
-            >
-              {list.map((job) => {
-                return <Item key={job.id} job={job} />
-              })}
-            </List>
-          )
-        }}
-      </ListExportProvider>
+          }}
+        </ListExportProvider>
+      </Spacer>
     </HomePageLayout>
   )
 }

@@ -72,7 +72,7 @@ export function Form({
 
       <Spacer bottom='14'>
         <Section title='More options' titleSize='small'>
-          <ListItem tag='div'>
+          <ListItem>
             <HookedInputSwitch
               id='toggle-cleanup'
               inline
@@ -83,7 +83,7 @@ export function Form({
               name='dryData'
             />
           </ListItem>
-          <ListItem tag='div'>
+          <ListItem>
             <HookedInputSimpleSelect
               id='format'
               label='Format'
