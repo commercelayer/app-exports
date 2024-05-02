@@ -1,4 +1,4 @@
-import { type CommerceLayerClient, type Export } from '@commercelayer/sdk'
+import { type Export } from '@commercelayer/sdk'
 import { type ExportDetailsContextValue } from 'App'
 import {
   createContext,
@@ -11,10 +11,10 @@ import {
 } from 'react'
 import { initialState, initialValues } from './data'
 import { reducer } from './reducer'
+import { useCoreSdkProvider } from '@commercelayer/app-elements'
 
 interface ExportDetailsProviderProps {
   exportId: string
-  sdkClient: CommerceLayerClient
   children: ((props: ExportDetailsContextValue) => ReactNode) | ReactNode
 }
 
@@ -25,11 +25,11 @@ export const useExportDetailsContext = (): ExportDetailsContextValue =>
   useContext(Context)
 
 export function ExportDetailsProvider({
-  sdkClient,
   exportId,
   children
 }: ExportDetailsProviderProps): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const { sdkClient } = useCoreSdkProvider()
   const intervalId = useRef<number | null>(null)
 
   const fetchJob = useCallback(

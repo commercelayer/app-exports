@@ -1,8 +1,12 @@
-import { ListDetailsItem, ListDetails } from '@commercelayer/app-elements'
+import {
+  ListDetailsItem,
+  ListDetails,
+  withSkeletonTemplate
+} from '@commercelayer/app-elements'
 import { useExportDetailsContext } from './Provider'
 import { StatusBadge } from './StatusBadge'
 
-export function ExportDetails(): JSX.Element | null {
+export const ExportDetails = withSkeletonTemplate(({ isLoading }) => {
   const {
     state: { data }
   } = useExportDetailsContext()
@@ -12,7 +16,7 @@ export function ExportDetails(): JSX.Element | null {
   }
 
   return (
-    <ListDetails title='Details'>
+    <ListDetails title='Details' isLoading={isLoading}>
       {data.status != null ? (
         <ListDetailsItem label='Status'>
           <StatusBadge job={data} />
@@ -33,7 +37,7 @@ export function ExportDetails(): JSX.Element | null {
       <ListDetailsItem label='Format'>{data.format}</ListDetailsItem>
     </ListDetails>
   )
-}
+})
 
 function JsonPreview({ json }: { json?: object | null }): JSX.Element {
   return (

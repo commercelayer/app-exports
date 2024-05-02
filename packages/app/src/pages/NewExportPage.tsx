@@ -10,7 +10,6 @@ import {
   InputFeedback,
   PageError,
   PageLayout,
-  PageSkeleton,
   Spacer,
   useCoreSdkProvider,
   useTokenProvider
@@ -39,10 +38,6 @@ const NewExportPage = (): JSX.Element | null => {
   const resourceType = params?.resourceType
   if (!isAvailableResource(resourceType)) {
     return <PageError errorName='Invalid resource' errorDescription='' />
-  }
-
-  if (sdkClient == null) {
-    return <PageSkeleton hasHeaderDescription />
   }
 
   if (!canUser('create', 'exports')) {
