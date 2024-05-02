@@ -1,9 +1,9 @@
 import { type Export } from '@commercelayer/sdk'
 import { useExportDetailsContext } from './Provider'
-import { Report } from '@commercelayer/app-elements'
+import { Report, withSkeletonTemplate } from '@commercelayer/app-elements'
 import { ExportCount } from './ExportCount'
 
-export function ExportReport(): JSX.Element | null {
+export const ExportReport = withSkeletonTemplate(({ isLoading }) => {
   const {
     state: { data }
   } = useExportDetailsContext()
@@ -17,6 +17,7 @@ export function ExportReport(): JSX.Element | null {
 
   return (
     <Report
+      isLoading={isLoading}
       items={[
         {
           label: getStatusLabel(data),
@@ -27,7 +28,7 @@ export function ExportReport(): JSX.Element | null {
       ]}
     />
   )
-}
+})
 
 function getStatusLabel(data: Export): string {
   switch (data.status) {

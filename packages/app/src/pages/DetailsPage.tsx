@@ -5,12 +5,11 @@ import { ErrorNotFound } from '#components/ErrorNotFound'
 import { appRoutes } from '#data/routes'
 import {
   useTokenProvider,
-  PageSkeleton,
   PageLayout,
   Spacer,
   Button,
   EmptyState,
-  useCoreSdkProvider
+  SkeletonTemplate
 } from '@commercelayer/app-elements'
 import { useLocation, useRoute, Link } from 'wouter'
 import { ExportReport } from '#components/Details/ExportReport'
@@ -21,7 +20,6 @@ const DetailsPage = (): JSX.Element | null => {
     canUser,
     settings: { mode }
   } = useTokenProvider()
-  const { sdkClient } = useCoreSdkProvider()
   const [_match, params] = useRoute<{ exportId?: string }>(
     appRoutes.details.path
   )
@@ -54,48 +52,44 @@ const DetailsPage = (): JSX.Element | null => {
     )
   }
 
-  if (sdkClient == null) {
-    return <PageSkeleton layout='details' hasHeaderDescription />
-  }
-
   return (
-    <ExportDetailsProvider sdkClient={sdkClient} exportId={exportId}>
-      {({ state: { isLoading, data } }) =>
-        isLoading ? (
-          <PageSkeleton layout='details' hasHeaderDescription />
-        ) : data == null ? (
+    <ExportDetailsProvider exportId={exportId}>
+      {({ state: { isLoading, data, isNotFound } }) =>
+        isNotFound ? (
           <ErrorNotFound />
         ) : (
-          <PageLayout
-            title={<ExportedResourceType />}
-            mode={mode}
-            description={
-              <ExportDate
-                atType={
-                  data.status === 'completed' ? 'completed_at' : 'started_at'
-                }
-                prefixText={
-                  data.status === 'completed' ? 'Exported on ' : 'Started on'
-                }
-                includeTime
-              />
-            }
-            navigationButton={{
-              label: 'Exports',
-              icon: 'arrowLeft',
-              onClick: () => {
-                setLocation(appRoutes.list.makePath())
+          <SkeletonTemplate isLoading={isLoading}>
+            <PageLayout
+              title={<ExportedResourceType />}
+              mode={mode}
+              description={
+                <ExportDate
+                  atType={
+                    data.status === 'completed' ? 'completed_at' : 'started_at'
+                  }
+                  prefixText={
+                    data.status === 'completed' ? 'Exported on ' : 'Started on'
+                  }
+                  includeTime
+                />
               }
-            }}
-          >
-            <Spacer bottom='12'>
-              <ExportReport />
-            </Spacer>
+              navigationButton={{
+                label: 'Exports',
+                icon: 'arrowLeft',
+                onClick: () => {
+                  setLocation(appRoutes.list.makePath())
+                }
+              }}
+            >
+              <Spacer bottom='12'>
+                <ExportReport />
+              </Spacer>
 
-            <Spacer bottom='12'>
-              <ExportDetails />
-            </Spacer>
-          </PageLayout>
+              <Spacer bottom='12'>
+                <ExportDetails />
+              </Spacer>
+            </PageLayout>
+          </SkeletonTemplate>
         )
       }
     </ExportDetailsProvider>

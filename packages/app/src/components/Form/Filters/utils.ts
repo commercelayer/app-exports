@@ -1,7 +1,7 @@
 import { type QueryParamsList } from '@commercelayer/sdk'
 import { type AllFilters, type FilterValue } from 'AppForm'
 import { endOfDay, startOfDay } from 'date-fns'
-import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz'
+import { toZonedTime, fromZonedTime } from 'date-fns-tz'
 
 export function adaptFormFiltersToSdk(
   filters?: AllFilters,
@@ -76,14 +76,14 @@ export function isoDateToDayEdge({
       return undefined
     }
 
-    const zonedDate = utcToZonedTime(date, timezone)
+    const zonedDate = toZonedTime(date, timezone)
 
     if (edge === 'startOfTheDay') {
-      return zonedTimeToUtc(startOfDay(zonedDate), timezone).toISOString()
+      return fromZonedTime(startOfDay(zonedDate), timezone).toISOString()
     }
 
     if (edge === 'endOfTheDay') {
-      return zonedTimeToUtc(endOfDay(zonedDate), timezone).toISOString()
+      return fromZonedTime(endOfDay(zonedDate), timezone).toISOString()
     }
 
     return undefined
