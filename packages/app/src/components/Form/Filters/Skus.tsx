@@ -40,7 +40,7 @@ export function Skus({ onChange }: Props): JSX.Element | null {
       <Spacer bottom='6'>
         <ResourceFinder
           label='SKU codes'
-          resourceType='skus'
+          resourceType='stock_locations'
           isMulti
           onSelect={(values) => {
             updateFilters('code_in', flatSelectValues(values))

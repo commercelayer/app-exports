@@ -1,5 +1,4 @@
-import { type Export } from '@commercelayer/sdk'
-import { type ListResponse } from '@commercelayer/sdk/lib/cjs/resource'
+import type { Export, ListResponse } from '@commercelayer/sdk'
 
 declare module 'App' {
   export interface ListExportContextValue {
