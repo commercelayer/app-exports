@@ -1,5 +1,9 @@
-import { type CommerceLayerClient, type Export } from '@commercelayer/sdk'
-import { type ListResponse } from '@commercelayer/sdk/lib/cjs/resource'
+import {
+  type QueryParamsList,
+  type CommerceLayerClient,
+  type Export,
+  type ListResponse
+} from '@commercelayer/sdk'
 import { type ListExportContextValue, type ListExportContextState } from 'App'
 import {
   createContext,
@@ -117,7 +121,7 @@ const getAllExports = async ({
 }): Promise<ListResponse<Export>> => {
   return await cl.exports.list({
     pageNumber: state.currentPage,
-    pageSize,
+    pageSize: pageSize as QueryParamsList<Export>['pageSize'],
     sort: { created_at: 'desc' }
   })
 }

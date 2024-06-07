@@ -1,9 +1,10 @@
 import { type InputSelectValue } from '@commercelayer/app-elements/dist/ui/forms/InputSelect'
-import { type CommerceLayerClient } from '@commercelayer/sdk'
-import {
-  type ListResponse,
-  type Resource
-} from '@commercelayer/sdk/lib/cjs/resource'
+import type {
+  CommerceLayerClient,
+  ListResponse,
+  QueryArrayFields,
+  Resource
+} from '@commercelayer/sdk'
 
 export type SearchableResource =
   | 'markets'
@@ -12,7 +13,7 @@ export type SearchableResource =
   | 'shipping_categories'
   | 'stock_locations'
 
-export interface SearchParams {
+export interface SearchParams<Res extends SearchableResource> {
   /**
    * signed sdk client
    */
@@ -20,11 +21,11 @@ export interface SearchParams {
   /**
    * the resource we are requesting
    */
-  resourceType: SearchableResource
+  resourceType: Res
   /**
    * fields to return in search results
    */
-  fields?: string[]
+  fields?: QueryArrayFields<ListResource<Res>[number]>
   /**
    * resource filed to be used as value in option item
    */
@@ -35,6 +36,10 @@ export interface SearchParams {
   fieldForLabel?: 'code' | 'name'
 }
 
+type ListResource<TResource extends SearchableResource> = Awaited<
+  ReturnType<CommerceLayerClient[TResource]['list']>
+>
+
 export const fetchResourcesByHint = async ({
   sdkClient,
   hint,
@@ -42,7 +47,7 @@ export const fetchResourcesByHint = async ({
   fields = ['name', 'id'],
   fieldForValue,
   fieldForLabel = 'name'
-}: SearchParams & {
+}: SearchParams<SearchableResource> & {
   hint: string
 }): Promise<InputSelectValue[]> => {
   const fetchedResources = await sdkClient[resourceType].list({
@@ -65,7 +70,7 @@ export const fetchInitialResources = async ({
   fields = ['name', 'id'],
   fieldForValue,
   fieldForLabel
-}: SearchParams): Promise<InputSelectValue[]> => {
+}: SearchParams<SearchableResource>): Promise<InputSelectValue[]> => {
   const fetchedResources = await sdkClient[resourceType].list({
     fields,
     pageSize: 25
@@ -78,7 +83,10 @@ export const fetchInitialResources = async ({
 }
 
 interface AdaptSuggestionsParams
-  extends Pick<SearchParams, 'fieldForLabel' | 'fieldForValue'> {
+  extends Pick<
+    SearchParams<SearchableResource>,
+    'fieldForLabel' | 'fieldForValue'
+  > {
   fetchedResources: ListResponse<
     Resource & { name?: string; code?: string | null; id: string }
   >
