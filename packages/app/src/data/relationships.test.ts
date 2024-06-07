@@ -8,7 +8,8 @@ describe('getRelationshipsByResourceType', () => {
   test('Should retrieve a list of relationships', () => {
     expect(getRelationshipsByResourceType('bundles')).toMatchObject([
       'sku_list',
-      'sku_list_items'
+      'sku_list_items',
+      'tags'
     ])
   })
 

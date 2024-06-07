@@ -1,9 +1,9 @@
 import { type ResourceWithRelationship } from 'App'
 
 export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
-  bundles: ['sku_list', 'sku_list_items'],
+  bundles: ['sku_list', 'sku_list_items', 'tags'],
   customer_subscriptions: ['customer'],
-  customers: ['customer_subscriptions'],
+  customers: ['customer_subscriptions', 'tags'],
   orders: [
     'customer',
     'shipping_address',
@@ -17,7 +17,8 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
     'captures',
     'voids',
     'refunds',
-    'transactions'
+    'transactions',
+    'tags'
   ],
   order_subscriptions: [
     'customer',
@@ -27,7 +28,7 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
   ],
   payment_methods: ['order'],
   prices: ['sku', 'price_tiers'],
-  shipments: ['order', 'shipping_category', 'shipping_method'],
+  shipments: ['order', 'shipping_category', 'shipping_method', 'tags'],
   shipping_categories: ['skus'],
   shipping_methods: ['shipments'],
   skus: [
@@ -35,7 +36,8 @@ export const exportRelationships: Record<ResourceWithRelationship, string[]> = {
     'prices',
     'prices.price_tiers',
     'stock_items',
-    'tax_categories'
+    'tax_categories',
+    'tags'
   ],
   sku_lists: ['sku_list_items', 'bundles'],
   sku_list_items: ['sku'],
