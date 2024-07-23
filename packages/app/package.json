@@ -1,8 +1,9 @@
 {
+  "private": true,
   "name": "app-exports",
   "description": "A Commerce Layer Single Page Application to export resources with a nice GUI.",
   "version": "1.3.0",
-  "private": true,
+  "type": "module",
   "author": {
     "name": "Giuseppe Ciotola",
     "email": "giuseppe@commercelayer.io"
